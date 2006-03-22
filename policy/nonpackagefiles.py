@@ -43,6 +43,9 @@ class RemoveNonPackageFiles(policy.DestdirPolicy):
     This is one of the rare packages that requires .la files to be
     installed in order to work.
     """
+    requires = (
+        ('Strip', policy.CONDITIONAL_PRIOR),
+    )
     invariantinclusions = [
         r'\.la$',
         # python .a's might have been installed in the wrong place on multilib

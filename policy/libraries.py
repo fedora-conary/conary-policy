@@ -141,6 +141,7 @@ class FixupMultilibPaths(policy.DestdirPolicy):
     run (extremely rare).
     """
     requires = (
+        ('ExecutableLibraries', policy.CONDITIONAL_SUBSEQUENT),
         ('Strip', policy.CONDITIONAL_SUBSEQUENT),
     )
     invariantinclusions = [
@@ -401,6 +402,9 @@ class NormalizeLibrarySymlinks(policy.DestdirPolicy):
     """
     requires = (
         ('SharedLibrary', policy.REQUIRED),
+        ('ExecutableLibraries', policy.CONDITIONAL_PRIOR),
+        ('FixupMultilibPaths', policy.CONDITIONAL_PRIOR),
+        ('Strip', policy.CONDITIONAL_SUBSEQUENT),
     )
     invariantsubtrees = librarydirs
 

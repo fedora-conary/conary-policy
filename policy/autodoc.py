@@ -61,6 +61,9 @@ class AutoDoc(policy.DestdirPolicy):
     files to the package.
     """
 
+    requires = (
+        ('ReadableDocs', policy.CONDITIONAL_SUBSEQUENT),
+    )
     rootdir = '%(builddir)s'
     invariantinclusions = [
         '.*/NEWS$',
