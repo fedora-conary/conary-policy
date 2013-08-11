@@ -16,7 +16,6 @@
 
 
 VERSION=1.2
-NAMEVER=conary-policy-$(VERSION)
 DESTDIR=/
 POLICYDIR=/usr/lib/conary/policy/
 
@@ -34,15 +33,16 @@ dist:
 	$(MAKE) archive
 
 archive:
-	mkdir -p $(NAMEVER)/policy
-	cp Makefile NEWS LICENSE $(NAMEVER)/
-	cp -a doc $(NAMEVER)/
-	cp -a policy/*.py $(NAMEVER)/policy/
-	tar cjf $(NAMEVER).tar.bz2 $(NAMEVER)
-	rm -rf $(NAMEVER)
+	@rm -rf /tmp/conary-policy-$(VERSION) /tmp/conary-policy$(VERSION)-tmp
+	@mkdir -p /tmp/conary-policy-$(VERSION)-tmp
+	@git archive --format tar $(VERSION) | (cd /tmp/conary-policy-$(VERSION)-tmp/ ; tar x )
+	@mv /tmp/conary-policy-$(VERSION)-tmp/ /tmp/conary-policy-$(VERSION)/
+	@dir=$$PWD; cd /tmp; tar -c --bzip2 -f $$dir/conary-policy-$(VERSION).tar.bz2 conary-policy-$(VERSION)
+	@rm -rf /tmp/conary-policy-$(VERSION)
+	@echo "The archive is in conary-policy-$(VERSION).tar.bz2"
 
 tag:
-	hg tag $(NAMEVER)
+	git tag $(VERSION) refs/heads/master
 
 version:
 	sed -i 's/@NEW@/$(VERSION)/g' NEWS
